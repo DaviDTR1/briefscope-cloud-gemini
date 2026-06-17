@@ -1,0 +1,46 @@
+services:
+  # ── ChromaDB vector store ─────────────────────────────────────────────────
+  briefscope_chroma_gemini:
+    image: chromadb/chroma:1.5.9
+    container_name: briefscope_chroma_gemini
+    environment:
+      - IS_PERSISTENT=TRUE
+      - ANONYMIZED_TELEMETRY=FALSE
+    volumes:
+      - briefscope_chroma_gemini_data:/data
+    networks:
+      - queai_network
+    restart: unless-stopped
+    # Chroma listens on 8000 internally — not published to host
+
+  # ── BriefScope app ────────────────────────────────────────────────────────
+  briefscope_cloud_gemini:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: briefscope_cloud_gemini_service
+    environment:
+      - ROOT_PATH=/api/briefscope_cloud_gemini
+      - LLM_MODE=cloud
+    volumes:
+      - briefscope_cloud_gemini_data:/code/data
+      - briefscope_cloud_gemini_generated:/code/generated
+    networks:
+      - queai_network
+    depends_on:
+      - briefscope_chroma_gemini
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.briefscope_cloud_gemini.rule=PathPrefix(`/api/briefscope_cloud_gemini`)"
+      - "traefik.http.routers.briefscope_cloud_gemini.entrypoints=web"
+      - "traefik.http.services.briefscope_cloud_gemini.loadbalancer.server.port=8080"
+
+volumes:
+  briefscope_cloud_gemini_data:
+  briefscope_cloud_gemini_generated:
+  briefscope_chroma_gemini_data:
+
+networks:
+  queai_network:
+    external: true
