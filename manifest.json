@@ -5,7 +5,7 @@
   "configuration_entry_point": "/api/briefscope_cloud_gemini/config",
   "documentation_entry_point": "/api/briefscope_cloud_gemini/docs",
   "healthcheck_entry_point": "/api/briefscope_cloud_gemini/health",
-  "version": "1.7.4",
+  "version": "1.7.5",
   "logo": "logo.png",
   "description": "Agente que analiza y genera documentos. Analiza los archivos que subes (PDF, DOCX, XLSX, TXT, MD) y genera entregables descargables (PDF, DOCX, XLSX, PPTX, MD, TXT), con búsqueda RAG sobre tu contenido. Versión CLOUD Gemini: LLM y embeddings de Google (modelos Gemini); requiere una API key de Google.",
   "description_en": "Agent that analyzes and generates documents. It analyzes your uploaded files (PDF, DOCX, XLSX, TXT, MD) and generates downloadable deliverables (PDF, DOCX, XLSX, PPTX, MD, TXT), with RAG search over your content. CLOUD Gemini version: Google LLM and embeddings (Gemini models); requires a Google API key.",
